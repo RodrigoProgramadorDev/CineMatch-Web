@@ -1,0 +1,177 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+}
+
+header, footer {
+    text-align: center;
+    padding: 1rem;
+    background: #222;
+    color: #fff;
+}
+
+main {
+    flex: 1;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 90%;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-perfil label {
+    font-weight: bold;
+    padding: 0;
+    
+}
+
+.form-perfil fieldset legend {
+    margin: 0.5rem 0;
+}
+
+.form-perfil fieldset label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.form-perfil input[type="text"],
+.form-perfil input[type="number"] {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+}
+
+.form-perfil input[type="number"] {
+    max-width: 5rem;
+}
+
+.form-perfil fieldset {
+    border: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.form-perfil button {
+    background: #000;
+    color: #fff;
+    padding: 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Container dos cards */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Cada card */
+.card {
+  flex: 1 1 250px; /* cresce, encolhe, largura mínima */
+    max-width: 300px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 1rem;
+}
+
+.badge.Alta { background: green; color: #fff; padding: 0.3rem; }
+.badge.Média { background: orange; color: #fff; padding: 0.3rem; }
+.badge.Baixa { background: red; color: #fff; padding: 0.3rem; }
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .cards-container {
+    flex-direction: column;
+    align-items: center;
+    }
+
+    .card {
+    max-width: 90%; /* ocupa quase toda a largura no mobile */
+    }
+}
+
+
+/* Estilos dos resutados */
+cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.card-serie {
+    max-width: 20rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.card-serie img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.card-serie h3 {
+    margin: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.card-serie p {
+    margin: 0.5rem;
+    color: #555;
+}
+
+.badge {
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #fff;
+}
+.badge.Alta { background: green; }
+.badge.Média { background: orange; }
+.badge.Baixa { background: red; }
+
+@media (max-width: 768px) {
+    .cards-container {
+    flex-direction: column;
+    align-items: center;
+    }
+    .card-serie {
+    max-width: 90%;
+    }
+}
