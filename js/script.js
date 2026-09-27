@@ -1,3 +1,5 @@
+import { Series } from "./modelo.js";
+
 // Os elementos da DOM
 const form = document.querySelector("#form-profile");
 
@@ -95,3 +97,54 @@ function processCatalog(data) {
     //Aqui ele vai retorna o catalogo final ja tratado
     return catalog;
 }
+
+function calculateCompatibility(user, series) {
+
+    // Pegar os gêneros favoritos escolhidos pelo usuário
+    const userGenres = user.favoriteGenres;
+
+    // Pega os gêneros associados à série
+    const seriesGenres = series.genres;
+
+    // Aqui vou filtra os gêneros que aparecem tanto no perfil do usuário quanto na lista de gêneros da série
+    const commonGenres = seriesGenres.filter(genres => userGenres.includes(genres));
+
+    //Regra de calculo de compatibilidade número de gêneros em comum / total de gêneros da série * 100
+    const percentage = Math.round((commonGenres.length / seriesGenres.length) * 100);
+
+    //Identifica os gêneros da série que o usuário ainda não escolheu
+    const unexploredGenres = seriesGenres.filter(genres => !userGenres.includes(genres));
+
+    //Classificação da compatibilidade com base no percentual calculado
+    let classification;
+
+    if (percentage >= 70) {
+        classification = "Alta";
+    } else if (percentage >= 40) {
+        classification = "Média";
+    } else {
+        classification = "Baixa";
+    }
+
+    //E aqui vai retorna um objeto com os dados da compatibilidade
+    return {
+        title: series.title,
+        percentage: percentage,
+        classification: classification,
+        commonGenres: commonGenres,
+        unexploredGenres: unexploredGenres
+    };
+}
+
+const data = await searchCatalog();
+
+const catalog = processCatalog(data);
+
+const series = catalog.map(dataSeries => new Series(
+    dataSeries.id,
+    dataSeries.title,
+    dataSeries.genres,
+    dataSeries.durationMinutes
+));
+
+console.log("Objetos Serie:", series);
