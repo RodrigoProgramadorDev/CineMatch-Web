@@ -22,8 +22,44 @@ form.addEventListener("submit", async (event) => {
             favoriteGenres: genres
         };
         console.log("Usuário:", user);
+
         localStorage.setItem("cinematchProfile", JSON.stringify(user));
-    } catch (erro) {
-        formMessage.textContent = erro.message
+
+        formMessage.textContent = "";
+
+        await iniciarCineMatch(user);
+
+    } catch (error) {
+        formMessage.textContent = error.message
     }
 });
+console.log("test");
+async function searchCatalog() {
+    try {
+        console.log("test2");
+        await new Promise(resolve => {
+            setTimeout(resolve, 500);
+        });
+
+        const response = await fetch(
+            "https://api.tvmaze.com/shows?page=0"
+        );
+
+        if(!response.ok) {
+            throw new Error(
+                `Erro HTTP: ${response.status}`
+            );
+        }
+
+        const data = await response.json();
+
+        console.log("Catálago bruto", data);
+        console.log("cai aqui");
+        return data;
+
+    } catch(error) {
+        console.error("Erro ao buscar catálogo:", error);
+        return[];
+    }
+}
+searchCatalog();
