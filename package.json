@@ -1,7 +1,7 @@
 {
   "name": "cinematch-web",
   "version": "1.0.0",
-  "description": "",
+  "description": "Projeto CineMatch Web",
   "main": "index.js",
   "scripts": {
     "start": "live-server",
