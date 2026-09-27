@@ -62,4 +62,36 @@ async function searchCatalog() {
         return[];
     }
 }
-searchCatalog();
+
+function processCatalog(data) {
+    const catalog = data
+
+        // Filtra apenas série que têm um array de generos válido e não vazio
+        // e se possuem um object rating com média definida
+        .filter(serie => 
+            Array.isArray(serie.genres) &&
+            serie.genres.length > 0 &&
+            serie.rating &&
+            serie.rating.average
+        )
+
+        //Ordena as séries pela nota média (rating.average), do maior para o menor
+        .sort((a, b) => 
+            b.rating.average - a.rating.average    
+        ) 
+
+        //Pega apenas as 8 primeiras séries da lista ordenada
+        .slice(0, 8)
+        
+        //Transforma cada série em um novo objeto com os campos desejados
+        .map(serie => ({
+        id: serie.id,
+        title: serie.name,
+        type: "Série",
+        genres: serie.genres,
+        durationMinutes: serie.runtime
+        }));
+
+    //Aqui ele vai retorna o catalogo final ja tratado
+    return catalog;
+}
