@@ -20,6 +20,7 @@ export function clearResults() {
 //Função que vai criar um "card" de cada filme ou serie com os dados de um resultado
 export function rerenderCard(result) {
     const card = document.createElement("article");
+    card.className = "card";
 
     const title = document.createElement("h3");
     title.textContent = result.title;
