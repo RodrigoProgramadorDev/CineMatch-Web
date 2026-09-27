@@ -1,4 +1,5 @@
 import { Series } from "./modelo.js";
+import { rerenderCard, showResultsScreen, clearResults, showProfileScreen} from "./ui.js";
 
 // Os elementos da DOM
 const form = document.querySelector("#form-profile");
@@ -29,7 +30,7 @@ form.addEventListener("submit", async (event) => {
 
         formMessage.textContent = "";
 
-        await iniciarCineMatch(user);
+        await startCineMatch(user);
 
     } catch (error) {
         formMessage.textContent = error.message
@@ -148,3 +149,75 @@ const series = catalog.map(dataSeries => new Series(
 ));
 
 console.log("Objetos Serie:", series);
+
+//Função principal que inicia o CineMacth com base no perfil do usuário
+async function startCineMatch(user) {
+    //mostrar a tela de resultado
+    showResultsScreen();
+
+    console.log("Tentando inicir1");//log de depuraçao
+
+    //Aqui vou busca o catálago de séries ou filmes
+    const data = await searchCatalog();
+
+    //Caso não encontrar dados vai encerra a função
+    if(data.length === 0) {
+        console.log("nada encontrado nesse momento");
+
+        return;
+    }
+
+    //vai processa os dados brutos do catálogo
+    const catalog = processCatalog(data);
+
+    //para caso não ter recomendação após o processamento
+    if (catalog.length === 0) {
+        console.log("Sem recomendação");
+
+        return;
+    }
+    //log mostrar o catálogo processado ou tratado
+    console.log("Catálogo tratado:", catalog);
+    
+    //Vai cria objetos da classe Series a partir dos dados do catálogo
+    const series = catalog.map(dataSeries => new Series(dataSeries.id, dataSeries.title, dataSeries.genres, dataSeries.durationMinutes));
+    
+    //log dos objetos criados
+    console.log("Objetos Serie:", series);
+
+    //Para cada serie, vai calcula a compatibilidade com o perfil do usuário
+    series.forEach(serie => {
+        const result = calculateCompatibility(user, serie);
+
+        console.log("Resultado:", result);//resultado no console
+
+        rerenderCard(result);// e aqui vai renderiza o card na tela
+    })
+}
+
+//Função que vai verifica se existe um perfil salvo no localStorage
+function verifySavedProfile() {
+
+    //aqui vou recupera o perfil salvo
+    const savedProfile = localStorage.getItem("cinematchProfile");
+
+    if (savedProfile) {
+        try {
+            const user = JSON.parse(savedProfile);//converte de JSON para objeto
+
+            console.log("Perfil recuperado:", user);
+
+            startCineMatch(user);//vai iniciar com o perfil recuperado
+        } catch (erro) {
+            console.error("Erro ao recuperar perfil:", erro);
+
+            localStorage.removeItem("cinematchProfile");//vai remove o perfil inválido
+        }
+    }
+}
+//botão para trocar de perfil
+switchProfileButton.addEventListener("click", () => { localStorage.removeItem("cinematchProfile"); form.reset(); clearResults(); showProfileScreen() ;});
+
+
+//Executa a verificação de perfil salvo ao carregar
+verifySavedProfile();
