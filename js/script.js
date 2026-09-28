@@ -53,11 +53,13 @@ form.addEventListener("submit", async (event) => {
         localStorage.setItem("cinematchProfile", JSON.stringify(user));
 
         formMessage.textContent = "";
+        formMessage.classList.remove("error");
 
         await startCineMatch(user);
 
     } catch (error) {
-        formMessage.textContent = error.message
+        formMessage.textContent = error.message;
+        formMessage.classList.add("error");
     }
 });
 
@@ -231,17 +233,20 @@ async function startCineMatch(user) {
     //log dos objetos criados
     console.log("Objetos Serie:", series);
 
-    //Para cada serie, vai calcula a compatibilidade com o perfil do usuário
-    series.forEach(serie => {
-        const result = calculateCompatibility(user, serie);
+    // Calcula compatibilidade para cada série
+    const results = series.map(serie => calculateCompatibility(user, serie));
 
-        console.log("Resultado:", result);//resultado no console
+    // Ordena pela compatibilidade maior primeiro
+    results.sort((a, b) => b.percentage - a.percentage);
 
-        renderCard(result);// e aqui vai renderiza o card na tela
+    // Pega apenas os 8 primeiros
+    const topResults = results.slice(0, 8);
 
-        const number = countCalculations();
-
-        updateCounter(number);
+    // Renderiza os cards
+    topResults.forEach(result => {
+    renderCard(result);
+    const number = countCalculations();
+    updateCounter(number);
     });
 }
 

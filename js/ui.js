@@ -14,7 +14,9 @@ export function showProfileScreen() {
 export function showLoading() {
     const message = document.querySelector("#loading-message");
     message.textContent = "Buscando as melhores séries pra você..."
-    message.classList.add("loading"); 
+    message.classList.add("loading");
+    document.querySelector("#error-message").textContent = "";
+    document.querySelector("#error-message").classList.remove("error");
 }
 
 export function hideLoading() {
@@ -32,12 +34,14 @@ export function displayErrorMessage(text) {
 //Aqui é a função que vai limpa os resultados e mensagens de erro
 export function clearResults() {
     document.querySelector("#results").innerHTML = "";
-    document.querySelector("#error-message").textContent = "";
+    const errorMessage = document.querySelector("#error-message");
+    errorMessage.textContent = "";
+    errorMessage.classList.remove("error");
 }
 
 export function displayWelcomeMessage(name) {
     const element = document.querySelector("#welcome-message");
-    element.textContent = `Olá, ${name}! Esta são algumas séries que podem combinar com você.`
+    element.textContent = `Olá, ${name}! Estas são algumas séries que podem combinar com você.`
 }
 
 export function updateCounter(number) {
@@ -52,19 +56,20 @@ const genreTranslations = {
     "Action": "Ação",
     "Science-Fiction": "Ficção Científica",
     "Thriller": "Suspense",
-    "Crime": "Crime",
+    "Crime": "Policial",
     "Mystery": "Mistério",
     "Horror": "Terror",
     "Romance": "Romance",
     "Family": "Família",
     "Fantasy": "Fantasia",
-    "Music": "Música",
+    "Music": "Musical",
     "Sports": "Esportes",
     "Medical": "Médico",
     "Legal": "Jurídico",
     "Western": "Faroeste",
     "War": "Guerra",
-    "Anime": "Anime"
+    "Anime": "Anime",
+    "Adventure": "Aventura",
 };
 
 export function toggleTheme() {
