@@ -62,18 +62,21 @@ header h1 {
 }
 
 main {
-    width: 90%;
-    max-width: 68.75rem;
-    margin: 0 auto;
-    padding: 3rem 0;
-    flex: 1;
+    display: flex;
+    justify-content: center;   /* centraliza horizontalmente */
+    align-items: center;       /* centraliza verticalmente */
+    min-height: 80vh;          /* ocupa boa parte da altura da tela */
+    width: 100%;               /* garante que ocupe toda a largura */
+    padding: 2rem;             /* espaço interno */
 }
 
 .section {
+    max-width: 600px;          /* limite de largura */
+    width: 90%;               /* ocupa toda a largura até o limite */
+    margin: auto;              /* centraliza horizontalmente */
     background-color: var(--section-bg);
     padding: 2rem;
     border-radius: 1rem;
-    margin-bottom: 2rem;
 }
 
 #form-profile {
@@ -199,8 +202,9 @@ button:hover {
     gap: 1rem;
     word-wrap: break-word;   /* quebra palavras longas */
     overflow-wrap: break-word;
+    margin: auto;              /* centraliza horizontalmente */
+    width: 90%;               /* ocupa toda a largura até o limite */
 }
-
 
 .card h3 {
     color: var(--secondary-text);
@@ -303,8 +307,8 @@ button:hover {
 
 @media (max-width: 768px) {
     main {
-        width: 95%;
-        padding: 1rem 0;
+        width: 100%;
+        padding: 1rem;
     }
 
     .section {
