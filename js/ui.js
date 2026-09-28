@@ -101,6 +101,9 @@ export function renderCard(result) {
     //e aqui difinir uma classe de css para estilizar ele
     classification.className = `badge ${result.classification}`;
     classification.textContent = result.classificationLabel;
+
+    // Acessibilidade para descreve a badge para leitores de tela
+    classification.setAttribute("aria-label", `Compatibilidade ${result.classificationLabel}`);
     
     const commonGenres = document.createElement("p");
     

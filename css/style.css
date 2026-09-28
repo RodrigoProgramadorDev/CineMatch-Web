@@ -14,13 +14,13 @@
 }
 
 .light-theme {
-    --bg-color: #4d5583;
+    --bg-color: #98a0d4;
     --text-color: #101322;
-    --header-bg: #98a0d4;
-    --section-bg: #7a56b9;
-    --card-bg: #98a0d4;
-    --accent-color: #5b21b6;
-    --accent-hover: #7c3aed;
+    --header-bg: #4d5583;
+    --section-bg: #4d5583;
+    --card-bg: #4d5583;
+    --accent-color: #8b5cf6;
+    --accent-hover: #8b5cf6;
     --badge-high: #16a34a;
     --badge-medium: #ca8a04;
     --badge-low: #dc2626;
