@@ -1,12 +1,24 @@
 import { Series } from "./modelo.js";
-import { rerenderCard, showResultsScreen, clearResults, showProfileScreen} from "./ui.js";
+import {renderCard, showResultsScreen, clearResults, showProfileScreen, displayWelcomeMessage, updateCounter, displayErrorMessage, hideLoading, showLoading, toggleTheme} from "./ui.js";
 
 // Os elementos da DOM
 const form = document.querySelector("#form-profile");
 
 const switchProfileButton = document.querySelector("#btn-switch-profile");
 
-const formMessage = document.querySelector("#form-message")
+const formMessage = document.querySelector("#form-message");
+
+function createCounter(){
+    let counter = 0;
+
+    return function() {
+        counter++;
+
+        return counter;
+    };
+}
+
+const countCalculations = createCounter();
 
 // capturando os dados do formulario
 
@@ -17,6 +29,18 @@ form.addEventListener("submit", async (event) => {
         const name = document.querySelector("#name").value.trim();
         const age = Number(document.querySelector("#age").value);
         const genres = Array.from(document.querySelectorAll(`input[name="genres"]:checked`)).map(input => input.value);
+
+        if(!name) {
+            throw new Error("Digite seu nome.");
+        }
+
+        if(isNaN(age) || age < 1 || age > 120) {
+            throw new Error("Digite uma idade válida");
+        }
+
+        if(genres.length === 0) {
+            throw new Error("Escolha pelo menos um gênero favorito.");
+        }
         
         // Montando o objeto usuario
         const user = {
@@ -36,10 +60,12 @@ form.addEventListener("submit", async (event) => {
         formMessage.textContent = error.message
     }
 });
-console.log("test");
+
 async function searchCatalog() {
     try {
-        console.log("test2");
+
+        //simular o atrasor
+        showLoading();
         await new Promise(resolve => {
             setTimeout(resolve, 500);
         });
@@ -57,12 +83,14 @@ async function searchCatalog() {
         const data = await response.json();
 
         console.log("Catálago bruto", data);
-        console.log("cai aqui");
+
         return data;
 
     } catch(error) {
         console.error("Erro ao buscar catálogo:", error);
         return[];
+    } finally {
+        hideLoading();
     }
 }
 
@@ -92,7 +120,8 @@ function processCatalog(data) {
         title: serie.name,
         type: "Série",
         genres: serie.genres,
-        durationMinutes: serie.runtime
+        durationMinutes: serie.runtime,
+        image: serie.image ? serie.image.medium : null
         }));
 
     //Aqui ele vai retorna o catalogo final ja tratado
@@ -108,7 +137,7 @@ function calculateCompatibility(user, series) {
     const seriesGenres = series.genres;
 
     // Aqui vou filtra os gêneros que aparecem tanto no perfil do usuário quanto na lista de gêneros da série
-    const commonGenres = seriesGenres.filter(genres => userGenres.includes(genres));
+    const commonGenres = seriesGenres.filter(genre => userGenres.includes(genre));
 
     //Regra de calculo de compatibilidade número de gêneros em comum / total de gêneros da série * 100
     const percentage = Math.round((commonGenres.length / seriesGenres.length) * 100);
@@ -118,13 +147,17 @@ function calculateCompatibility(user, series) {
 
     //Classificação da compatibilidade com base no percentual calculado
     let classification;
+    let classificationLabel;
 
     if (percentage >= 70) {
-        classification = "Alta";
+        classification = "high";
+        classificationLabel = "Alta";
     } else if (percentage >= 40) {
-        classification = "Média";
+        classification = "medium";
+        classificationLabel = "Média";
     } else {
-        classification = "Baixa";
+        classification = "low";
+        classificationLabel = "Baixa";
     }
 
     //E aqui vai retorna um objeto com os dados da compatibilidade
@@ -132,8 +165,10 @@ function calculateCompatibility(user, series) {
         title: series.title,
         percentage: percentage,
         classification: classification,
+        classificationLabel: classificationLabel,
         commonGenres: commonGenres,
-        unexploredGenres: unexploredGenres
+        unexploredGenres: unexploredGenres,
+        image: series.image,
     };
 }
 
@@ -145,17 +180,24 @@ const series = catalog.map(dataSeries => new Series(
     dataSeries.id,
     dataSeries.title,
     dataSeries.genres,
-    dataSeries.durationMinutes
+    dataSeries.durationMinutes,
+    dataSeries.image
 ));
 
 console.log("Objetos Serie:", series);
+
+function executeAfterLoading(callback, name) {
+    callback(name);
+}
 
 //Função principal que inicia o CineMacth com base no perfil do usuário
 async function startCineMatch(user) {
     //mostrar a tela de resultado
     showResultsScreen();
 
-    console.log("Tentando inicir1");//log de depuraçao
+    clearResults();
+
+    displayWelcomeMessage(user.name);
 
     //Aqui vou busca o catálago de séries ou filmes
     const data = await searchCatalog();
@@ -163,6 +205,8 @@ async function startCineMatch(user) {
     //Caso não encontrar dados vai encerra a função
     if(data.length === 0) {
         console.log("nada encontrado nesse momento");
+
+        displayErrorMessage("Não encontramos recomendações agora.");
 
         return;
     }
@@ -174,13 +218,15 @@ async function startCineMatch(user) {
     if (catalog.length === 0) {
         console.log("Sem recomendação");
 
+        displayErrorMessage("Não encontramos recomendações agora.");
+
         return;
     }
     //log mostrar o catálogo processado ou tratado
     console.log("Catálogo tratado:", catalog);
     
     //Vai cria objetos da classe Series a partir dos dados do catálogo
-    const series = catalog.map(dataSeries => new Series(dataSeries.id, dataSeries.title, dataSeries.genres, dataSeries.durationMinutes));
+    const series = catalog.map(dataSeries => new Series(dataSeries.id, dataSeries.title, dataSeries.genres, dataSeries.durationMinutes, dataSeries.image));
     
     //log dos objetos criados
     console.log("Objetos Serie:", series);
@@ -191,8 +237,12 @@ async function startCineMatch(user) {
 
         console.log("Resultado:", result);//resultado no console
 
-        rerenderCard(result);// e aqui vai renderiza o card na tela
-    })
+        renderCard(result);// e aqui vai renderiza o card na tela
+
+        const number = countCalculations();
+
+        updateCounter(number);
+    });
 }
 
 //Função que vai verifica se existe um perfil salvo no localStorage
@@ -215,6 +265,17 @@ function verifySavedProfile() {
         }
     }
 }
+
+const switchThemeButton = document.querySelector("#btn-switch-theme");
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "light") {
+    document.body.classList.add("light-theme");
+}
+
+switchThemeButton.addEventListener("click", () => {
+    toggleTheme();
+});
 //botão para trocar de perfil
 switchProfileButton.addEventListener("click", () => { localStorage.removeItem("cinematchProfile"); form.reset(); clearResults(); showProfileScreen() ;});
 
