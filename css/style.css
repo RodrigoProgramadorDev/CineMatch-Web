@@ -18,7 +18,7 @@
     --text-color: #101322;
     --header-bg: #4d5583;
     --section-bg: #4d5583;
-    --card-bg: #4d5583;
+    --card-bg: #39468d;
     --accent-color: #8b5cf6;
     --accent-hover: #8b5cf6;
     --badge-high: #16a34a;
@@ -211,8 +211,9 @@ button:hover {
 }
 
 .card-cover {
-    width: 100%;
+    width: 11rem;
     height: auto;
+    margin: auto;
     max-height: 16rem;
     object-fit: contain;  
     border-radius: 1rem;
