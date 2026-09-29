@@ -1,3 +1,40 @@
+:root {
+    --title-color: #7c3aed;
+    --bg-color: #101322;
+    --text-color: #ffffff;
+    --header-bg: #171b35;
+    --section-bg: #191e38;
+    --card-bg: #252b4a;
+    --accent-color: #8b5cf6;
+    --accent-hover: #7c3aed;
+    --badge-high: #16a34a;
+    --badge-medium: #ca8a04;
+    --badge-low: #dc2626;
+    --border-color: #3b4166;
+    --secondary-text: #c4b5fd;
+}
+
+.light-theme {
+    --title-color: #7c3aed;
+    --bg-color: #d4d4d8;
+    --text-color: #1f2937;
+    --header-bg: #a1a1aa;
+    --section-bg: #b0b0b5;
+    --card-bg: #9ca3af;
+    --accent-color: #a78bfa;
+    --accent-hover: #8b5cf6;
+    --badge-high: #22c55e;
+    --badge-medium: #facc15;
+    --badge-low: #f87171;
+    --border-color: #6b7280;
+    --secondary-text: #374151;
+}
+
+
+
+
+
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,35 +43,42 @@
 
 
 body {
+    display: flex;
+    flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #101322;
-    color: #ffffff;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     min-height: 100vh;
 }
+
 
 header {
     text-align: center;
     padding: 1rem;
-    background-color: #171b35;
+    background-color: var(--header-bg);
 }
 
 header h1 {
-    color: #8b5cf6;
+    color: var(--title-color);
     margin-bottom: 0.5rem;
 }
 
 main {
-    width: 90%;
-    max-width: 68.75rem;
-    margin: 0 auto;
-    padding: 3rem 0;
+    display: flex;
+    justify-content: center;   /* centraliza horizontalmente */
+    align-items: center;       /* centraliza verticalmente */
+    min-height: 80vh;          /* ocupa boa parte da altura da tela */
+    width: 100%;               /* garante que ocupe toda a largura */
+    padding: 2rem;             /* espaço interno */
 }
 
 .section {
-    background-color: #191e38;
+    max-width: 600px;          /* limite de largura */
+    width: 90%;               /* ocupa toda a largura até o limite */
+    margin: auto;              /* centraliza horizontalmente */
+    background-color: var(--section-bg);
     padding: 2rem;
     border-radius: 1rem;
-    margin-bottom: 2rem;
 }
 
 #form-profile {
@@ -56,14 +100,18 @@ label {
 input[type="text"],
 input[type="number"] {
     padding: 1rem;
-    border: 1px solid #3b4166;
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
-    background-color: #101322;
-    color: white;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+input[type="number"] {
+    max-width: 8rem;
 }
 
 fieldset {
-    border: 1px solid #3b4166;
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     padding: 1rem;
     display: flex;
@@ -82,15 +130,21 @@ fieldset label {
     align-items: center;
     gap: 0.3rem;
     padding: 0.5rem 0.8rem;
-    border: 1px solid #3b4166;
+    border: 1px solid  var(--border-color);
     border-radius: 0.5rem;
     cursor: pointer;
-    background-color: #101322;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Esconde os checkboxes */
+input[type="checkbox"] {
+    display: none;
 }
 
 label:has(input[type="checkbox"]:checked) {
-    background-color: #252b4a;
-    border-color: #8b5cf6;
+    background-color: var(--card-bg);
+    border-color: var(--accent-color);
 }
 
 button {
@@ -98,8 +152,8 @@ button {
     border-radius: 0.5rem;
     padding: 1rem;
 
-    background-color: #8b5cf6;
-    color: white;
+    background-color: var(--accent-color);
+    color: var(--text-color);
 
     font-weight: bold;
     cursor: pointer;
@@ -108,7 +162,23 @@ button {
 }
 
 button:hover {
-    background-color: #7c3aed;
+    background-color: var(--accent-color);
+}
+
+#btn-switch-theme {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#btn-switch-theme:hover {
+    background-color: var(--accent-hover);
 }
 
 
@@ -130,17 +200,33 @@ button:hover {
 .card {
     flex: 1 1 calc(25% - 1.5rem);
     max-width: calc(25% - 1.5rem);
-    background-color: #252b4a;
+    background-color: var(--card-bg);
     border-radius: 1rem;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    word-wrap: break-word;   /* quebra palavras longas */
+    overflow-wrap: break-word;
+    margin: auto;              /* centraliza horizontalmente */
+    width: 90%;               /* ocupa toda a largura até o limite */
 }
 
-
 .card h3 {
-    color: #c4b5fd;
+    color: var(--secondary-text);
+}
+
+.card-cover {
+    width: 11rem;
+    height: auto;
+    margin: auto;
+    max-height: 16rem;
+    object-fit: contain;  
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+.card h3, .card p {
+    line-height: 1.4;        /* melhora legibilidade */
 }
 
 
@@ -160,41 +246,61 @@ button:hover {
 
 
 .badge.high {
-    background-color: #16a34a;
+    background-color: var(--badge-high);
 }
 
 
 .badge.medium {
-    background-color: #ca8a04;
+    background-color: var(--badge-medium);
 }
 
 
 .badge.low {
-    background-color: #dc2626;
+    background-color: var(--badge-low);
 }
 
 .message {
     margin: 0.5rem 0;
 }
 
+/* Destaque para mensagens de erro */
 .error {
     color: #f87171;
+    font-weight: bold;
 }
 
 #loading-message {
-    color: #c4b5fd;
+    color: var(--secondary-text);
     font-style: italic;
 }
 
 #calculation-accountant {
     margin-bottom: 1rem;
-    color: #c4b5fd;
+    color: var(--secondary-text);
+}
+
+.loading::after {
+    content: "";
+    display: inline-block;
+    margin-left: 8px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--secondary-text);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Animação para o spinner */
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .baseboard {
     text-align: center;
     padding: 2rem;
-    background-color: #171b35;
+    background-color: var(--header-bg);
+    margin-top: auto;
 }
 
 /* Responsividade */
@@ -208,8 +314,8 @@ button:hover {
 
 @media (max-width: 768px) {
     main {
-        width: 95%;
-        padding: 1rem 0;
+        width: 100%;
+        padding: 1rem;
     }
 
     .section {
@@ -225,5 +331,15 @@ button:hover {
     .card {
         flex: 1 1 100%;
         max-width: 100%;
+    }
+    .card-cover {
+        max-height: 20rem;
+    }
+    .card h3 {
+        font-size: 1rem;    
+    }
+    .card p {
+        font-size: 0.9rem;   
+        word-break: break-word;
     }
 }
