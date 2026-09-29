@@ -104,6 +104,10 @@ input[type="number"] {
     color: var(--text-color);
 }
 
+input[type="number"] {
+    max-width: 8rem;
+}
+
 fieldset {
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
