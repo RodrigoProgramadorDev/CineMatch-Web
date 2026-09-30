@@ -65,17 +65,17 @@ header h1 {
 
 main {
     display: flex;
-    justify-content: center;   /* centraliza horizontalmente */
-    align-items: center;       /* centraliza verticalmente */
-    min-height: 80vh;          /* ocupa boa parte da altura da tela */
-    width: 100%;               /* garante que ocupe toda a largura */
-    padding: 2rem;             /* espaço interno */
+    justify-content: center; 
+    align-items: center;     
+    min-height: 80vh; 
+    width: 100%;      
+    padding: 2rem; 
 }
 
 .section {
-    max-width: 600px;          /* limite de largura */
-    width: 90%;               /* ocupa toda a largura até o limite */
-    margin: auto;              /* centraliza horizontalmente */
+    max-width: 600px;  
+    width: 90%; 
+    margin: auto; 
     background-color: var(--section-bg);
     padding: 2rem;
     border-radius: 1rem;
@@ -206,10 +206,10 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    word-wrap: break-word;   /* quebra palavras longas */
+    word-wrap: break-word;
     overflow-wrap: break-word;
-    margin: auto;              /* centraliza horizontalmente */
-    width: 90%;               /* ocupa toda a largura até o limite */
+    margin: auto;
+    width: 90%; 
 }
 
 .card h3 {
@@ -226,7 +226,7 @@ button:hover {
     margin-bottom: 1rem;
 }
 .card h3, .card p {
-    line-height: 1.4;        /* melhora legibilidade */
+    line-height: 1.4;
 }
 
 
@@ -263,7 +263,7 @@ button:hover {
     margin: 0.5rem 0;
 }
 
-/* Destaque para mensagens de erro */
+
 .error {
     color: #f87171;
     font-weight: bold;
