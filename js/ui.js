@@ -82,6 +82,13 @@ export function toggleTheme() {
     localStorage.setItem("theme", isLight ? "light" : "dark");
 }
 
+export function createExpandButton() {
+    const button = document.createElement("button");
+    button.textContent = "Mostrar mais";
+    button.classList.add("expand-button");
+    return button;
+}
+
 // Função auxiliar para traduzir listas de gêneros
 function translateGenres(genres) {
     return genres.map(g => genreTranslations[g] || g).join(", ");

@@ -30,11 +30,6 @@
     --secondary-text: #374151;
 }
 
-
-
-
-
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -66,22 +61,22 @@ header h1 {
 main {
     display: flex;
     justify-content: center; 
-    align-items: center;     
-    min-height: 80vh; 
-    width: 100%;      
-    padding: 2rem; 
+    align-items: center;
+    min-height: 80vh;  
+    width: 100%;   
+    padding: 2rem;    
 }
 
 .section {
-    max-width: 600px;  
-    width: 90%; 
-    margin: auto; 
+    max-width: 600px;   
+    width: 90%;  
+    margin: auto;              
     background-color: var(--section-bg);
     padding: 2rem;
     border-radius: 1rem;
 }
 
-#form-profile {
+.form-profile {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -162,10 +157,20 @@ button {
 }
 
 button:hover {
-    background-color: var(--accent-color);
+    background-color: var(--accent-hover);
 }
 
-#btn-switch-theme {
+.expand-button {
+    display: block;  
+    margin: 20px auto;    
+    padding: 10px 20px;   
+    font-size: 16px; 
+    border: none;  
+    border-radius: 5px;  
+    cursor: pointer; 
+}
+
+.btn-switch-theme {
     margin-top: 0.5rem;
     padding: 0.5rem 1rem;
     border: none;
@@ -174,11 +179,6 @@ button:hover {
     color: var(--text-color);
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
-}
-
-#btn-switch-theme:hover {
-    background-color: var(--accent-hover);
 }
 
 
@@ -206,10 +206,10 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    word-wrap: break-word;
+    word-wrap: break-word; 
     overflow-wrap: break-word;
-    margin: auto;
-    width: 90%; 
+    margin: auto;  
+    width: 90%;
 }
 
 .card h3 {
@@ -269,12 +269,12 @@ button:hover {
     font-weight: bold;
 }
 
-#loading-message {
+.message {
     color: var(--secondary-text);
     font-style: italic;
 }
 
-#calculation-accountant {
+.calculation-accountant {
     margin-bottom: 1rem;
     color: var(--secondary-text);
 }
