@@ -3,13 +3,11 @@
 ## 📌 Nome do software
 **CineMatch Web** – Sistema de recomendação de séries baseado no perfil do usuário.
 
----
 
 ## 🧩 Problema que resolve
 Muitas vezes o usuário não sabe qual série assistir e perde tempo navegando em catálogos extensos.  
 O **CineMatch Web** resolve esse problema ao calcular a compatibilidade entre o perfil do usuário e as séries disponíveis, exibindo recomendações personalizadas de forma rápida e intuitiva.
 
----
 
 ## 🛠️ Técnicas e tecnologias utilizadas
 - **HTML5** – Estrutura semântica da aplicação
@@ -18,7 +16,6 @@ O **CineMatch Web** resolve esse problema ao calcular a compatibilidade entre o 
 - **API TVMaze** – Fonte de dados para catálogo de séries
 - **Live Server (npm)** – Ambiente de desenvolvimento local
 
----
 
 ## 🚀 Como executar
 1. Clone o repositório:
@@ -37,7 +34,8 @@ O **CineMatch Web** resolve esse problema ao calcular a compatibilidade entre o 
     ```bash
     npm start
 
----
+5. Abra no navegador: `http://localhost:8080`
+
 
 ## 📂 Escopo do projeto
 - Cadastro de perfil do usuário (nome, idade, preferências)
@@ -46,7 +44,6 @@ O **CineMatch Web** resolve esse problema ao calcular a compatibilidade entre o 
 - Alternância entre tema claro e escuro
 - Troca de perfil e contador de cálculos realizados
 
----
 
 ## Possíveis melhorias
 - Implementar sistema de login e persistência de dados
@@ -54,7 +51,6 @@ O **CineMatch Web** resolve esse problema ao calcular a compatibilidade entre o 
 - Criar versão mobile com PWA
 - Inserir testes automatizados
 
----
 
 ## 🎥 Vídeo de demonstração
 
@@ -67,7 +63,6 @@ Gravação de até 7 minutos abordando:
 
 📌 O vídeo esta disponibilizado no link aqui:
 
----
 
 ## 📜 Licença
 Este projeto está sob a licença ISC. Consulte o arquivo LICENSE para mais detalhes.
