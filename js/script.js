@@ -1,5 +1,5 @@
 import { Series } from "./modelo.js";
-import {renderCard, showResultsScreen, clearResults, showProfileScreen, displayWelcomeMessage, updateCounter, displayErrorMessage, hideLoading, showLoading, toggleTheme} from "./ui.js";
+import {renderCard, showResultsScreen, clearResults, showProfileScreen, displayWelcomeMessage, updateCounter, displayErrorMessage, hideLoading, showLoading, toggleTheme, createExpandButton} from "./ui.js";
 
 // Os elementos da DOM
 const form = document.querySelector("#form-profile");
@@ -112,9 +112,6 @@ function processCatalog(data) {
         .sort((a, b) => 
             b.rating.average - a.rating.average    
         ) 
-
-        //Pega apenas as 8 primeiras séries da lista ordenada
-        .slice(0, 8)
         
         //Transforma cada série em um novo objeto com os campos desejados
         .map(serie => ({
@@ -189,7 +186,10 @@ const series = catalog.map(dataSeries => new Series(
 console.log("Objetos Serie:", series);
 
 function executeAfterLoading(callback, name) {
-    callback(name);
+    
+    setTimeout(() => {
+        callback(name);
+    }, 500);
 }
 
 //Função principal que inicia o CineMacth com base no perfil do usuário
@@ -199,55 +199,55 @@ async function startCineMatch(user) {
 
     clearResults();
 
-    displayWelcomeMessage(user.name);
-
-    //Aqui vou busca o catálago de séries ou filmes
-    const data = await searchCatalog();
-
     //Caso não encontrar dados vai encerra a função
-    if(data.length === 0) {
+    if(!catalog ||catalog.length === 0) {
         console.log("nada encontrado nesse momento");
-
         displayErrorMessage("Não encontramos recomendações agora.");
 
         return;
     }
 
-    //vai processa os dados brutos do catálogo
-    const catalog = processCatalog(data);
-
-    //para caso não ter recomendação após o processamento
-    if (catalog.length === 0) {
-        console.log("Sem recomendação");
-
-        displayErrorMessage("Não encontramos recomendações agora.");
-
-        return;
-    }
     //log mostrar o catálogo processado ou tratado
     console.log("Catálogo tratado:", catalog);
-    
-    //Vai cria objetos da classe Series a partir dos dados do catálogo
-    const series = catalog.map(dataSeries => new Series(dataSeries.id, dataSeries.title, dataSeries.genres, dataSeries.durationMinutes, dataSeries.image));
     
     //log dos objetos criados
     console.log("Objetos Serie:", series);
 
     // Calcula compatibilidade para cada série
-    const results = series.map(serie => calculateCompatibility(user, serie));
+    const results = series.map(serie => calculateCompatibility(user, serie)).sort((a, b) => b.percentage - a.percentage); // pega só os 100 melhores
 
-    // Ordena pela compatibilidade maior primeiro
-    results.sort((a, b) => b.percentage - a.percentage);
-
-    // Pega apenas os 8 primeiros
-    const topResults = results.slice(0, 8);
+    let currentIndex = 0;
+    const batchSize = 8;
 
     // Renderiza os cards
-    topResults.forEach(result => {
-    renderCard(result);
-    const number = countCalculations();
-    updateCounter(number);
-    });
+    // Função para renderizar um lote de resultados
+    function renderBatch() {
+        const batch = results.slice(currentIndex, currentIndex + batchSize);
+        batch.forEach(result => {
+            renderCard(result);
+            updateCounter(countCalculations());
+        });
+        currentIndex += batchSize;
+    }
+
+    executeAfterLoading(displayWelcomeMessage, user.name);
+
+    // Renderiza o primeiro lote
+    renderBatch();
+
+    // Se houver mais resultados, cria o botão
+    if (results.length > 8) {
+        const expandButton = createExpandButton();
+
+        expandButton.addEventListener("click", () => {
+            renderBatch();
+            if (currentIndex >= results.length) {
+                expandButton.remove(); // remove o botão quando acabar
+            }
+        });
+
+        document.querySelector("#results-section").appendChild(expandButton);
+    }
 }
 
 //Função que vai verifica se existe um perfil salvo no localStorage
