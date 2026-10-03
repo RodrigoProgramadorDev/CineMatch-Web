@@ -13,7 +13,6 @@ import {
   createExpandButton,
 } from "./ui.js";
 
-// Os elementos da DOM
 const form = document.querySelector("#form-profile");
 
 const switchProfileButton = document.querySelector("#btn-switch-profile");
@@ -31,8 +30,6 @@ function createCounter() {
 }
 
 const countCalculations = createCounter();
-
-// capturando os dados do formulario
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -56,13 +53,11 @@ form.addEventListener("submit", async (event) => {
       throw new Error("Escolha pelo menos um gênero favorito.");
     }
 
-    // Montando o objeto usuario
     const user = {
       name: name,
       age: age,
       favoriteGenres: genres,
     };
-    console.log("Usuário:", user);
 
     localStorage.setItem("cinematchProfile", JSON.stringify(user));
 
@@ -78,7 +73,6 @@ form.addEventListener("submit", async (event) => {
 
 async function searchCatalog() {
   try {
-    //simular o atrasor
     showLoading();
     await new Promise((resolve) => {
       setTimeout(resolve, 500);
@@ -92,11 +86,8 @@ async function searchCatalog() {
 
     const data = await response.json();
 
-    console.log("Catálago bruto", data);
-
     return data;
   } catch (error) {
-    console.error("Erro ao buscar catálogo:", error);
     return [];
   } finally {
     hideLoading();
@@ -109,7 +100,7 @@ function processCatalog(data) {
       (serie) =>
         Array.isArray(serie.genres) &&
         serie.genres.length > 0 &&
-        serie.rating?.average
+        serie.rating?.average,
     )
     .sort((a, b) => b.rating.average - a.rating.average)
     .map(
@@ -119,34 +110,28 @@ function processCatalog(data) {
           serie.name,
           serie.genres,
           serie.runtime,
-          serie.image?.medium || null
-        )
+          serie.image?.medium || null,
+        ),
     );
 }
 
 function calculateCompatibility(user, series) {
-  // Pegar os gêneros favoritos escolhidos pelo usuário
   const userGenres = user.favoriteGenres;
 
-  // Pega os gêneros associados à série
   const seriesGenres = series.genres;
 
-  // Aqui vou filtra os gêneros que aparecem tanto no perfil do usuário quanto na lista de gêneros da série
   const commonGenres = seriesGenres.filter((genre) =>
     userGenres.includes(genre),
   );
 
-  //Regra de calculo de compatibilidade número de gêneros em comum / total de gêneros da série * 100
   const percentage = Math.round(
     (commonGenres.length / seriesGenres.length) * 100,
   );
 
-  //Identifica os gêneros da série que o usuário ainda não escolheu
   const unexploredGenres = seriesGenres.filter(
     (genres) => !userGenres.includes(genres),
   );
 
-  //Classificação da compatibilidade com base no percentual calculado
   let classification;
   let classificationLabel;
 
@@ -161,7 +146,6 @@ function calculateCompatibility(user, series) {
     classificationLabel = "Baixa";
   }
 
-  //E aqui vai retorna um objeto com os dados da compatibilidade
   return {
     title: series.title,
     percentage: percentage,
@@ -183,18 +167,15 @@ function executeAfterLoading(callback, name) {
   }, 500);
 }
 
-//Função principal que inicia o CineMacth com base no perfil do usuário
 async function startCineMatch(user) {
   showResultsScreen();
   clearResults();
 
   if (!series || series.length === 0) {
-    console.log("nada encontrado nesse momento");
     displayErrorMessage("Não encontramos recomendações agora.");
     return;
   }
 
-  // Calcula compatibilidade para cada série
   const results = series
     .map((serie) => calculateCompatibility(user, serie))
     .sort((a, b) => b.percentage - a.percentage);
@@ -221,7 +202,7 @@ async function startCineMatch(user) {
     expandButton.addEventListener("click", () => {
       renderBatch();
       if (currentIndex >= results.length) {
-        expandButton.remove(); 
+        expandButton.remove();
       }
     });
 
@@ -229,22 +210,15 @@ async function startCineMatch(user) {
   }
 }
 
-//Função que vai verifica se existe um perfil salvo no localStorage
 function verifySavedProfile() {
-  //aqui vou recupera o perfil salvo
   const savedProfile = localStorage.getItem("cinematchProfile");
 
   if (savedProfile) {
     try {
-      const user = JSON.parse(savedProfile); //converte de JSON para objeto
-
-      console.log("Perfil recuperado:", user);
-
-      startCineMatch(user); //vai iniciar com o perfil recuperado
+      const user = JSON.parse(savedProfile);
+      startCineMatch(user);
     } catch (erro) {
-      console.error("Erro ao recuperar perfil:", erro);
-
-      localStorage.removeItem("cinematchProfile"); //vai remove o perfil inválido
+      localStorage.removeItem("cinematchProfile");
     }
   }
 }
@@ -259,7 +233,7 @@ if (savedTheme === "light") {
 switchThemeButton.addEventListener("click", () => {
   toggleTheme();
 });
-//botão para trocar de perfil
+
 switchProfileButton.addEventListener("click", () => {
   localStorage.removeItem("cinematchProfile");
   form.reset();
@@ -267,5 +241,4 @@ switchProfileButton.addEventListener("click", () => {
   showProfileScreen();
 });
 
-//Executa a verificação de perfil salvo ao carregar
 verifySavedProfile();
