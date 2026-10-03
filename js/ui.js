@@ -1,10 +1,8 @@
-//Função que mostra a tela do resutados e esconde o perfil
 export function showResultsScreen() {
   document.querySelector("#perfil-section").hidden = true;
   document.querySelector("#results-section").hidden = false;
 }
 
-//Aqui vai mostra a tela do perfil e esconde o resultado
 export function showProfileScreen() {
   document.querySelector("#perfil-section").hidden = false;
   document.querySelector("#results-section").hidden = true;
@@ -30,7 +28,6 @@ export function displayErrorMessage(text) {
   message.classList.add("error");
 }
 
-//Aqui é a função que vai limpa os resultados e mensagens de erro
 export function clearResults() {
   document.querySelector("#results").innerHTML = "";
   const errorMessage = document.querySelector("#error-message");
@@ -50,7 +47,6 @@ export function updateCounter(number) {
   element.textContent = `Compatibilidade calculada ${number} vez(es) nesta sessão.`;
 }
 
-// Dicionário de tradução dos gêneros
 const genreTranslations = {
   Drama: "Drama",
   Comedy: "Comédia",
@@ -76,10 +72,8 @@ const genreTranslations = {
 export function toggleTheme() {
   document.body.classList.toggle("light-theme");
 
-  // verifica se o body tem a classe light-theme
   const isLight = document.body.classList.contains("light-theme");
 
-  // salva no localStorage
   localStorage.setItem("theme", isLight ? "light" : "dark");
 }
 
@@ -90,12 +84,10 @@ export function createExpandButton() {
   return button;
 }
 
-// Função auxiliar para traduzir listas de gêneros
 function translateGenres(genres) {
   return genres.map((g) => genreTranslations[g] || g).join(", ");
 }
 
-//Função que vai criar um "card" de cada filme ou serie com os dados de um resultado
 export function renderCard(result) {
   const card = document.createElement("article");
   card.className = "card";
@@ -107,14 +99,11 @@ export function renderCard(result) {
 
   percentage.textContent = `Compatibilidade: ${result.percentage}`;
 
-  //Criar tipo um rótulo badge
   const classification = document.createElement("span");
 
-  //e aqui difinir uma classe de css para estilizar ele
   classification.className = `badge ${result.classification}`;
   classification.textContent = result.classificationLabel;
 
-  // Acessibilidade para descreve a badge para leitores de tela
   classification.setAttribute(
     "aria-label",
     `Compatibilidade ${result.classificationLabel}`,
@@ -122,12 +111,10 @@ export function renderCard(result) {
 
   const commonGenres = document.createElement("p");
 
-  //aqui vai cria parágrafo para gêneros em comum
   commonGenres.textContent = `Gêneros em comum: ${result.commonGenres.length > 0 ? translateGenres(result.commonGenres) : "Nenhum"}`;
 
   const unexploredGenres = document.createElement("p");
 
-  //Cria parágrafo para gêneros não explorados
   unexploredGenres.textContent = `Gêneros não explorados: ${result.unexploredGenres.length > 0 ? translateGenres(result.unexploredGenres) : "Nenhum"}`;
 
   if (result.image) {
@@ -138,13 +125,11 @@ export function renderCard(result) {
     card.appendChild(cover);
   }
 
-  //Vou adicionar os elementos criados dentro do card
   card.appendChild(title);
   card.appendChild(percentage);
   card.appendChild(classification);
   card.appendChild(commonGenres);
   card.appendChild(unexploredGenres);
 
-  //E aqui vou adicionar os card dentro da seção de resultados
   document.querySelector("#results").appendChild(card);
 }
