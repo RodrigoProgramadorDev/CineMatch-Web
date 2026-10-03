@@ -61,7 +61,10 @@ Gravação de até 7 minutos abordando:
 - Branches criadas e objetivos de cada uma
 - Pontos de melhoria identificados no código
 
-📌 O vídeo esta disponibilizado no link aqui:
+
+📌 O vídeo esta disponibilizado no link aqui: https://www.youtube.com/watch?v=RTvxP5vKlb4
+
+📌 link de acesso ao quadro Kanban utilizado no projeto: https://trello.com/invite/b/6ab6e61bf0ebf61bc93df32c/ATTIc208c79d199e44cd6735c139fc33e0b4D3F55A8A/cinematch-web-recomendacao-de-series-em-tempo-real
 
 
 ## 📜 Licença
